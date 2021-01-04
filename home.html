@@ -185,6 +185,7 @@ if (document.location.hostname.match(/^(www\.)?chartjs\.org$/)) {
 		<option value="hour">Hour</option>
 		<option value="day" selected>Day</option>
 	</select>
+	<input type="text" id="date" name="date">
 	<button id="update">update</button>
 	<script>
 		function generateData() {
@@ -204,44 +205,8 @@ if (document.location.hostname.match(/^(www\.)?chartjs\.org$/)) {
           scales: {
             xAxes: [{
               type: 'time',
-              distribution: 'series',
-              offset: true,
               ticks: {
-                major: {
-                  enabled: true,
-                  fontStyle: 'bold'
-                },
-                source: 'data',
-                autoSkip: true,
-                autoSkipPadding: 75,
-                maxRotation: 0,
-                sampleSize: 100
-              },
-              afterBuildTicks: function(scale, ticks) {
-                var majorUnit = scale._majorUnit;
-                var firstTick = ticks[0];
-                var i, ilen, val, tick, currMajor, lastMajor;
-
-                val = moment(ticks[0].value);
-                if ((majorUnit === 'minute' && val.second() === 0)
-                    || (majorUnit === 'hour' && val.minute() === 0)
-                    || (majorUnit === 'day' && val.hour() === 9)
-                    || (majorUnit === 'month' && val.date() <= 3 && val.isoWeekday() === 1)
-                    || (majorUnit === 'year' && val.month() === 0)) {
-                  firstTick.major = true;
-                } else {
-                  firstTick.major = false;
-                }
-                lastMajor = val.get(majorUnit);
-
-                for (i = 1, ilen = ticks.length; i < ilen; i++) {
-                  tick = ticks[i];
-                  val = moment(tick.value);
-                  currMajor = val.get(majorUnit);
-                  tick.major = currMajor !== lastMajor;
-                  lastMajor = currMajor;
-                }
-                return ticks;
+                maxTicksLimit: 20
               }
             }],
             yAxes: [{
@@ -256,17 +221,7 @@ if (document.location.hostname.match(/^(www\.)?chartjs\.org$/)) {
           },
           tooltips: {
             intersect: false,
-            mode: 'index',
-            callbacks: {
-              label: function(tooltipItem, myData) {
-                var label = myData.datasets[tooltipItem.datasetIndex].label || '';
-                if (label) {
-                  label += ': ';
-                }
-                label += parseFloat(tooltipItem.value).toFixed(2);
-                return label;
-              }
-            }
+            mode: 'index'
           }
         }
       };
@@ -279,9 +234,20 @@ if (document.location.hostname.match(/^(www\.)?chartjs\.org$/)) {
         len = data.length;
         time_series_data = []
         var j;
-        for (j = 0; j < len/2; j++){
-          time_series_data[j] = {t: new moment(data[j+len/2], 'MMM DD, YYY, h:mm:ss a'), y:parseInt(100*parseFloat(data[j]))}
-        }
+				date_input = document.getElementById('date').value;
+				var counter = 0;
+				if (date_input == ""){
+        	for (j = 0; j < len/2; j++){
+          	time_series_data[j] = {t: new moment(data[j+len/2], 'MMM DD, YYYY, h:mm:ss a'), y:parseInt(100*parseFloat(data[j]))}
+        	}
+			  }else{
+					for (j = 0; j < len/2; j++){
+							if (data[j+len/2].includes(date_input)){
+	          		time_series_data[counter] = {t: new moment(data[j+len/2], 'MMM DD, YYYY, h:mm:ss a'), y:parseInt(100*parseFloat(data[j]))}
+								counter = counter + 1;
+							}
+					}
+				}
         cfg.data.datasets[i] = {
           label: name,
           backgroundColor: color(window.chartColors[Object.keys(window.chartColors)[i]]).alpha(0.5).rgbString(),
