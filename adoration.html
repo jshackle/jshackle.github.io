@@ -23,6 +23,13 @@
         var num = 0;
 
 		document.getElementById('update').addEventListener('click', function() {
+		$.ajax({
+  		method: "POST",
+  		url: "memory.php",
+  		data: { text: num.toString() }
+		})
+  		.done(function( response ) {
+    		});
             num = num + 1;
             document.getElementById('NumPeople').innerHTML = "There are " + num.toString() + " people done praying.";
 		var d = new Date();
