@@ -1,9 +1,40 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-    <head>
-        <title>Example</title>
+
+<head>
+	<title>Line Chart</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+	  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     </head>
     <body>
-        <p>This is an example of a simple HTML page with one paragraph.</p>
-    </body>
+	<div style="width:1000px" id="graph_container">
+		<p>PredictIt data sets</p>
+		<canvas id="chart1"></canvas>
+	</div>
+	<br>
+	<br>
+	Chart Type:
+	<select id="market">
+	</select>
+	<select id="unit">
+		<option value="minute">Minute</option>
+		<option value="hour">Hour</option>
+		<option value="day" selected>Day</option>
+	</select>
+	<input type="text" id="date" name="date">
+	<button id="update">update</button>
+	<script>
+
+        var num = 0;
+
+		document.getElementById('update').addEventListener('click', function() {
+            num = num + 1;
+            console.log(num);
+		});
+
+	</script>
+</body>
+
 </html>
+<\html>
