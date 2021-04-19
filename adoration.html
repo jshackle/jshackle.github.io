@@ -24,18 +24,18 @@
 
 		document.getElementById('update').addEventListener('click', function() {
             num = num + 1;
-            document.getElementByID('NumPeople').innerHTML = "There are " + num.toString() + " people done praying.";
+            document.getElementById('NumPeople').innerHTML = "There are " + num.toString() + " people done praying.";
 		var d = new Date();
 		date = d.toString();
-		 document.getElementByID('last_edit').innerHTML = "Last edit:" + date;
+		 document.getElementById('last_edit').innerHTML = "Last edit:" + date;
 		});
 		
 		document.getElementById('reset').addEventListener('click', function() {
            num = 0;
-            document.getElementByID('NumPeople').innerHTML = "There are " + num.toString() + " people done praying.";
+            document.getElementById('NumPeople').innerHTML = "There are " + num.toString() + " people done praying.";
 		var d = new Date();
 		date = d.toString();
-		 document.getElementByID('last_edit').innerHTML = "Last edit:" + date;
+		 document.getElementById('last_edit').innerHTML = "Last edit:" + date;
 		});
 		
 	
